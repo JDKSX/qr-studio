@@ -1,0 +1,101 @@
+/* Design tokens. Light is the base; dark only redefines colour. */
+
+:root {
+  /* System fonts only: a webfont request would send every visitor's IP to a
+     third party, which the privacy promise on this page rules out. Each of
+     these platforms ships a UI face that covers Thai and Latin. */
+  --font-sans: system-ui, -apple-system, "Segoe UI", "Leelawadee UI", "Noto Sans Thai",
+    "Sarabun", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+
+  --step--1: clamp(0.75rem, 0.73rem + 0.1vw, 0.8rem);
+  --step-0: clamp(0.875rem, 0.85rem + 0.12vw, 0.9375rem);
+  --step-1: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
+  --step-2: clamp(1.25rem, 1.15rem + 0.4vw, 1.5rem);
+  --step-3: clamp(1.5rem, 1.3rem + 0.9vw, 2rem);
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 26px;
+  --radius-full: 999px;
+
+  --bg: #f6f7fb;
+  --bg-accent: radial-gradient(1200px 600px at 12% -10%, #e8ecff 0%, transparent 60%),
+    radial-gradient(900px 500px at 100% 0%, #f5e8ff 0%, transparent 55%);
+  --surface: #ffffff;
+  --surface-2: #f2f4f9;
+  --surface-3: #e8ebf3;
+  --border: #e1e5ee;
+  --border-strong: #cbd2e1;
+
+  --text: #0f172a;
+  --text-muted: #5b6577;
+  --text-subtle: #8a93a6;
+
+  --accent: #4f46e5;
+  --accent-hover: #4338ca;
+  --accent-soft: #eef0ff;
+  --accent-fg: #ffffff;
+
+  --ok: #15803d;
+  --ok-soft: #e9f8ef;
+  --warn: #b45309;
+  --warn-soft: #fdf3e3;
+  --error: #b91c1c;
+  --error-soft: #fdecec;
+  --info: #1d4ed8;
+  --info-soft: #eaf0ff;
+
+  --shadow-sm: 0 1px 2px rgb(15 23 42 / 6%), 0 1px 3px rgb(15 23 42 / 4%);
+  --shadow-md: 0 4px 6px -2px rgb(15 23 42 / 6%), 0 12px 24px -8px rgb(15 23 42 / 10%);
+  --shadow-lg: 0 18px 40px -12px rgb(15 23 42 / 18%);
+
+  --ring: 0 0 0 2px var(--surface), 0 0 0 4px var(--accent);
+
+  /* The checkerboard behind a transparent QR preview. */
+  --checker: #eceff5;
+}
+
+[data-theme="dark"] {
+  --bg: #080b13;
+  --bg-accent: radial-gradient(1200px 600px at 12% -10%, #17204a 0%, transparent 60%),
+    radial-gradient(900px 500px at 100% 0%, #2a1740 0%, transparent 55%);
+  --surface: #111725;
+  --surface-2: #171e2f;
+  --surface-3: #1f2739;
+  --border: #242d41;
+  --border-strong: #35405a;
+
+  --text: #eef2f9;
+  --text-muted: #9aa5ba;
+  --text-subtle: #6f7b93;
+
+  --accent: #818cf8;
+  --accent-hover: #a5b4fc;
+  --accent-soft: #1b2145;
+  --accent-fg: #0b1020;
+
+  --ok: #4ade80;
+  --ok-soft: #10251a;
+  --warn: #fbbf24;
+  --warn-soft: #2a2010;
+  --error: #f87171;
+  --error-soft: #2c1417;
+  --info: #93c5fd;
+  --info-soft: #14203c;
+
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 40%);
+  --shadow-md: 0 8px 24px -8px rgb(0 0 0 / 60%);
+  --shadow-lg: 0 24px 48px -16px rgb(0 0 0 / 70%);
+
+  --checker: #1b2231;
+}
