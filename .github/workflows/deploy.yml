@@ -5,11 +5,13 @@ on:
     branches: [main]
   workflow_dispatch:
 
+# Allow the workflow to publish to Pages via OIDC.
 permissions:
   contents: read
   pages: write
   id-token: write
 
+# One deploy at a time; a queued run replaces an older queued run.
 concurrency:
   group: pages
   cancel-in-progress: false
@@ -28,6 +30,7 @@ jobs:
       - run: npm ci
 
       - name: Build
+        # The repository name is the Pages sub-path, so it is also the base path.
         env:
           BASE_PATH: /${{ github.event.repository.name }}/
         run: npm run build
