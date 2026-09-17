@@ -28,11 +28,18 @@ function hostOf(raw: string): string {
   }
 }
 
+/**
+ * Where this studio lives. Used as the sample URL so the very first code on
+ * screen is a working one that points back at the tool itself — handy for
+ * sharing it, and obviously safe to scan.
+ */
+export const SITE_URL = "https://jdksx.github.io/qr-studio/";
+
 const urlSchema: ContentSchema = {
   id: "url",
   labelKey: "type.url",
   hintKey: "hint.url",
-  defaults: { url: "https://github.com/" },
+  defaults: { url: SITE_URL },
   fields: [
     {
       name: "url",

@@ -13,6 +13,13 @@ export function PreviewPane({ pipeline }: { pipeline: QrPipeline }) {
   const transparent = useStudio((state) => state.design.background.transparent);
   const [testOpen, setTestOpen] = useState(false);
 
+  /**
+   * The code regenerates as you type, which is fast enough to be invisible —
+   * people paste a URL and cannot tell anything happened. This flashes a short
+   * confirmation each time a new code is actually drawn.
+   */
+  const [justUpdated, setJustUpdated] = useState(false);
+
   useEffect(() => {
     const stage = stageRef.current;
     if (!stage) return;
@@ -21,6 +28,10 @@ export function PreviewPane({ pipeline }: { pipeline: QrPipeline }) {
       return;
     }
     mountSvg(stage, pipeline.render.root);
+
+    setJustUpdated(true);
+    const timer = setTimeout(() => setJustUpdated(false), 1600);
+    return () => clearTimeout(timer);
   }, [pipeline.render]);
 
   const encoded = pipeline.encoded;
@@ -33,9 +44,27 @@ export function PreviewPane({ pipeline }: { pipeline: QrPipeline }) {
           ref={stageRef}
           className="preview__stage"
           data-transparent={transparent || undefined}
+          data-updated={justUpdated || undefined}
           style={{ aspectRatio: String(pipeline.aspect) }}
           hidden={failed}
         />
+
+        {!failed ? (
+          <p className="preview__status" data-visible={justUpdated || undefined} role="status">
+            <svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true">
+              <path
+                d="M3.5 8.5 6.5 11.5 12.5 4.5"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+            {t("preview.generated")}
+          </p>
+        ) : null}
+
         {!encoded.ok ? (
           <div className="preview__placeholder" role="status">
             <p className="preview__placeholder-title">

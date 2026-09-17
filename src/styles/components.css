@@ -1022,6 +1022,7 @@ select.input {
 }
 
 .preview__frame {
+  position: relative;
   display: grid;
   place-items: center;
   padding: var(--space-5);
@@ -1046,6 +1047,48 @@ select.input {
     linear-gradient(-45deg, transparent 75%, var(--checker) 75%);
   background-size: 16px 16px;
   background-position: 0 0, 0 8px, 8px -8px, -8px 0;
+}
+
+/* Confirmation that a new code was just drawn — the render is too fast to see. */
+.preview__status {
+  position: absolute;
+  top: var(--space-3);
+  left: 50%;
+  translate: -50% 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  background: var(--ok-soft);
+  color: var(--ok);
+  font-size: var(--step--1);
+  font-weight: 650;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+  pointer-events: none;
+}
+
+.preview__status[data-visible] {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.preview__stage[data-updated] {
+  animation: qr-pop 0.4s ease;
+}
+
+@keyframes qr-pop {
+  0% {
+    transform: scale(0.975);
+    opacity: 0.55;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 .preview__placeholder {
@@ -1644,9 +1687,30 @@ select.input {
   gap: var(--space-2);
 }
 
-.quick-download .btn[data-variant="primary"] {
+.quick-download__actions {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--space-2);
   width: 100%;
+}
+
+.quick-download__actions .btn[data-variant="primary"] {
   box-shadow: var(--shadow-md);
+}
+
+.quick-download__hint {
+  font-size: var(--step--1);
+  color: var(--text-subtle);
+  text-align: center;
+  line-height: 1.45;
+  max-width: 34ch;
+}
+
+/* Brief green confirmation right on the button that was pressed. */
+.btn[data-copied] {
+  background: var(--ok-soft);
+  border-color: var(--ok);
+  color: var(--ok);
 }
 
 .quick-download__secondary {
@@ -1705,8 +1769,16 @@ select.input {
     border-top: 1px solid var(--border);
   }
 
-  .mobile-download .btn {
-    width: 100%;
+  .mobile-download {
+    gap: var(--space-2);
+  }
+
+  .mobile-download .btn[data-variant="primary"] {
+    flex: 1;
+  }
+
+  .mobile-download .btn[data-variant="secondary"] {
+    flex-shrink: 0;
   }
 
   /* Room so the bar never covers the last control. */
@@ -1718,8 +1790,9 @@ select.input {
     bottom: calc(76px + env(safe-area-inset-bottom));
   }
 
-  /* The preview already carries a download button; one is enough up there. */
-  .app-preview .quick-download .btn[data-variant="primary"] {
+  /* The sticky bar already carries both actions; no need to repeat them here. */
+  .app-preview .quick-download__actions,
+  .app-preview .quick-download__hint {
     display: none;
   }
 

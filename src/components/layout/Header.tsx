@@ -1,11 +1,10 @@
+import { SITE_URL } from "../../core/encode/contentSchemas";
 import { useT } from "../../hooks/useT";
 import type { Lang } from "../../i18n";
 import { LANGUAGES } from "../../i18n";
 import { useStudio } from "../../state/store";
 import type { ThemeChoice } from "../../state/store";
 import { Button, Segmented } from "../ui/controls";
-
-const DEMO_URL = "https://github.com/";
 
 export function Header() {
   const t = useT();
@@ -21,7 +20,7 @@ export function Header() {
 
   const tryDemo = () => {
     setContentType("url");
-    setField("url", DEMO_URL);
+    setField("url", SITE_URL);
     applyPreset("gradient");
     setLogo(null);
     notify(t("header.demoLoaded"), "info");
