@@ -12,6 +12,12 @@ import {
 
 const get = (values: ContentValues, key: string): string => (values[key] ?? "").trim();
 
+/** Clips a display string, keeping the front — that is the part people recognise. */
+function shorten(value: string, max = 30): string {
+  const trimmed = value.trim();
+  return trimmed.length > max ? `${trimmed.slice(0, max - 1)}…` : trimmed;
+}
+
 /** A URL typed without a scheme is almost always meant to be https. */
 function withScheme(raw: string): string {
   const value = raw.trim();
@@ -54,6 +60,7 @@ const urlSchema: ContentSchema = {
   ],
   build: (v) => withScheme(get(v, "url")),
   slug: (v) => hostOf(get(v, "url")) || "url",
+  summary: (v) => shorten(withScheme(get(v, "url")).replace(/^https?:\/\//, "")),
 };
 
 const textSchema: ContentSchema = {
@@ -75,6 +82,7 @@ const textSchema: ContentSchema = {
   ],
   build: (v) => (v["text"] ?? "").trim(),
   slug: (v) => get(v, "text").slice(0, 24) || "text",
+  summary: (v) => shorten(get(v, "text")),
 };
 
 const wifiSchema: ContentSchema = {
@@ -114,6 +122,7 @@ const wifiSchema: ContentSchema = {
     return `WIFI:${parts.join(";")};;`;
   },
   slug: (v) => get(v, "ssid") || "wifi",
+  summary: (v) => shorten(get(v, "ssid")),
 };
 
 const emailSchema: ContentSchema = {
@@ -136,6 +145,7 @@ const emailSchema: ContentSchema = {
     return `mailto:${to}${qs ? `?${qs}` : ""}`;
   },
   slug: (v) => get(v, "to").split("@")[0] || "email",
+  summary: (v) => shorten(get(v, "to")),
 };
 
 const phoneSchema: ContentSchema = {
@@ -159,6 +169,7 @@ const phoneSchema: ContentSchema = {
     return phone ? `tel:${phone}` : "";
   },
   slug: (v) => digitsOnly(get(v, "phone")) || "phone",
+  summary: (v) => shorten(normalisePhone(get(v, "phone"))),
 };
 
 const smsSchema: ContentSchema = {
@@ -177,6 +188,7 @@ const smsSchema: ContentSchema = {
     return message ? `SMSTO:${phone}:${message}` : `SMSTO:${phone}:`;
   },
   slug: (v) => digitsOnly(get(v, "phone")) || "sms",
+  summary: (v) => shorten(normalisePhone(get(v, "phone"))),
 };
 
 const vcardSchema: ContentSchema = {
@@ -226,6 +238,7 @@ const vcardSchema: ContentSchema = {
     ]);
   },
   slug: (v) => [get(v, "firstName"), get(v, "lastName")].filter(Boolean).join("-") || "contact",
+  summary: (v) => shorten([get(v, "firstName"), get(v, "lastName")].filter(Boolean).join(" ")),
 };
 
 const whatsappSchema: ContentSchema = {
@@ -254,6 +267,7 @@ const whatsappSchema: ContentSchema = {
       : `https://wa.me/${phone}`;
   },
   slug: (v) => `whatsapp-${digitsOnly(get(v, "phone"))}`.replace(/-$/, ""),
+  summary: (v) => shorten(digitsOnly(get(v, "phone"))),
 };
 
 const geoSchema: ContentSchema = {
@@ -274,6 +288,7 @@ const geoSchema: ContentSchema = {
     return label ? `geo:${lat},${lng}?q=${lat},${lng}(${encodeURIComponent(label)})` : `geo:${lat},${lng}`;
   },
   slug: (v) => get(v, "label") || "location",
+  summary: (v) => shorten(get(v, "label") || [get(v, "latitude"), get(v, "longitude")].filter(Boolean).join(", ")),
 };
 
 const eventSchema: ContentSchema = {
@@ -304,6 +319,7 @@ const eventSchema: ContentSchema = {
     ]);
   },
   slug: (v) => get(v, "title") || "event",
+  summary: (v) => shorten(get(v, "title")),
 };
 
 export const CONTENT_SCHEMAS: Record<ContentTypeId, ContentSchema> = {

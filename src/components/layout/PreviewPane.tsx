@@ -14,9 +14,10 @@ export function PreviewPane({ pipeline }: { pipeline: QrPipeline }) {
   const [testOpen, setTestOpen] = useState(false);
 
   /**
-   * The code regenerates as you type, which is fast enough to be invisible —
-   * people paste a URL and cannot tell anything happened. This flashes a short
-   * confirmation each time a new code is actually drawn.
+   * The code regenerates as you type, fast enough that nothing appears to
+   * happen. The caption below the code stays put — it names what was encoded,
+   * so there is always an answer to "did it pick up what I pasted?" — and it
+   * flashes for a moment whenever a new code is actually drawn.
    */
   const [justUpdated, setJustUpdated] = useState(false);
 
@@ -30,7 +31,7 @@ export function PreviewPane({ pipeline }: { pipeline: QrPipeline }) {
     mountSvg(stage, pipeline.render.root);
 
     setJustUpdated(true);
-    const timer = setTimeout(() => setJustUpdated(false), 1600);
+    const timer = setTimeout(() => setJustUpdated(false), 1200);
     return () => clearTimeout(timer);
   }, [pipeline.render]);
 
@@ -50,18 +51,23 @@ export function PreviewPane({ pipeline }: { pipeline: QrPipeline }) {
         />
 
         {!failed ? (
-          <p className="preview__status" data-visible={justUpdated || undefined} role="status">
+          <p className="preview__status" data-flash={justUpdated || undefined} role="status">
             <svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true">
+              <circle cx="8" cy="8" r="7" fill="currentColor" opacity="0.15" />
               <path
-                d="M3.5 8.5 6.5 11.5 12.5 4.5"
+                d="M4.6 8.3 6.9 10.6 11.4 5.6"
                 fill="none"
                 stroke="currentColor"
-                strokeWidth="2"
+                strokeWidth="1.9"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
             </svg>
-            {t("preview.generated")}
+            <span className="preview__status-text">
+              {pipeline.summary
+                ? t("preview.generatedWith", { value: pipeline.summary })
+                : t("preview.generated")}
+            </span>
           </p>
         ) : null}
 

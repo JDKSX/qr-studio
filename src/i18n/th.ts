@@ -404,6 +404,7 @@ export const th: Record<TranslationKey, string> = {
   "download.copyHint": "คัดลอกแล้ววางในแชท เอกสาร หรือสไลด์ได้เลย ไม่ต้องบันทึกเป็นไฟล์",
   "download.copyFailed": "คัดลอกไม่สำเร็จ ลองใช้ดาวน์โหลดแทน",
   "download.copyUnsupported": "เบราว์เซอร์นี้คัดลอกรูปไม่ได้ ใช้ดาวน์โหลดแทน",
+  "preview.generatedWith": "สร้าง QR {value} สำเร็จแล้ว",
   "preview.generated": "สร้าง QR แล้ว",
   "report.showAll": "ดูผลตรวจทั้งหมด",
   "report.hideAll": "ซ่อนรายละเอียด",

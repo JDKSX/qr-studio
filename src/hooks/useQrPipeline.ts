@@ -22,6 +22,8 @@ export interface QrPipeline {
   slug: string;
   /** Human label used by the history list. */
   label: string;
+  /** Short description of the encoded content, for the status line. */
+  summary: string;
   /** Translation keys of the required fields that are still empty. */
   missing: TranslationKey[];
   /** Background used when rasterising; `null` when the user asked for transparency. */
@@ -158,6 +160,7 @@ export function useQrPipeline(): QrPipeline {
     report,
     slug: schema.slug(values ?? {}),
     label: schema.slug(values ?? {}) || typeLabel,
+    summary: schema.summary(values ?? {}),
     missing,
     exportBackground,
     aspect,

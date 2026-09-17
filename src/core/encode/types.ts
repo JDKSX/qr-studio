@@ -56,4 +56,6 @@ export interface ContentSchema {
   build: (values: ContentValues) => string;
   /** Human friendly fragment used for the download filename and history label. */
   slug: (values: ContentValues) => string;
+  /** Short, readable description of what the code points at, for the status line. */
+  summary: (values: ContentValues) => string;
 }

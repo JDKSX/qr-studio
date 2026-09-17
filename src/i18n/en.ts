@@ -404,6 +404,7 @@ export const en = {
   "download.copyHint": "Copied images paste straight into chat, docs or slides — no need to save a file.",
   "download.copyFailed": "Could not copy. Download it instead.",
   "download.copyUnsupported": "This browser cannot copy images. Use download instead.",
+  "preview.generatedWith": "QR for {value} is ready",
   "preview.generated": "QR ready",
   "report.showAll": "See all checks",
   "report.hideAll": "Hide details",

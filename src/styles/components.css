@@ -66,6 +66,13 @@
   min-width: 0;
 }
 
+/* Grid items default to min-width: auto, which refuses to shrink below their
+   content. The status caption holds one long unbreakable line, so without this
+   the whole preview column pushes the page wider than the screen. */
+.app-preview {
+  min-width: 0;
+}
+
 .app-panels {
   display: flex;
   flex-direction: column;
@@ -1023,8 +1030,9 @@ select.input {
 
 .preview__frame {
   position: relative;
-  display: grid;
-  place-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   padding: var(--space-5);
   background: var(--surface);
   border: 1px solid var(--border);
@@ -1049,31 +1057,43 @@ select.input {
   background-position: 0 0, 0 8px, 8px -8px, -8px 0;
 }
 
-/* Confirmation that a new code was just drawn — the render is too fast to see. */
+/* Always-on caption naming what was encoded. It stays put so there is a
+   permanent answer to "did it pick up what I pasted?", and flashes when a new
+   code is drawn, since the render itself is too fast to notice. */
 .preview__status {
-  position: absolute;
-  top: var(--space-3);
-  left: 50%;
-  translate: -50% 0;
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 5px;
-  padding: 4px 10px;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  max-width: 100%;
+  margin-top: var(--space-3);
+  padding: 5px 10px;
   border-radius: var(--radius-full);
-  background: var(--ok-soft);
-  color: var(--ok);
+  background: var(--surface-2);
+  color: var(--text-muted);
   font-size: var(--step--1);
-  font-weight: 650;
-  white-space: nowrap;
-  opacity: 0;
-  transform: translateY(-4px);
-  transition: opacity 0.35s ease, transform 0.35s ease;
-  pointer-events: none;
+  font-weight: 600;
+  transition: background 0.45s ease, color 0.45s ease;
 }
 
-.preview__status[data-visible] {
-  opacity: 1;
-  transform: translateY(0);
+.preview__status svg {
+  flex-shrink: 0;
+  color: var(--ok);
+}
+
+.preview__status-text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Flash on change, then settle back to the resting style. */
+.preview__status[data-flash] {
+  background: var(--ok-soft);
+  color: var(--ok);
+  transition: none;
 }
 
 .preview__stage[data-updated] {
